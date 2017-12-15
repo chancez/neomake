@@ -565,7 +565,10 @@ function! s:command_maker_base._get_tempfilename(jobinfo) abort dict
                 let filename = fnamemodify(bufname, ':t')
                 let s:make_info[make_id].tempfile_dir = dir
             else
-                let dir = fnamemodify(orig_file, ':h')
+                let dir = get(g:, 'neomake_tempfile_base_directory', '')
+                if empty(dir)
+                    let dir = fnamemodify(orig_file, ':h')
+                endif
                 if filewritable(dir) != 2
                     let dir = tempname()
                     let s:make_info[make_id].tempfile_dir = dir
